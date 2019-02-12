@@ -62,9 +62,9 @@ def robots():
 if __name__ == "__main__":
     run(
         port=3322, host="0.0.0.0",
-        #server="gunicorn",
-        #worker_class='egg:meinheld#gunicorn_worker',
-        #workers=8,
-        #quiet=True, debug=False
-        reloader=True
-        )
+        server="gunicorn",
+        worker_class='egg:meinheld#gunicorn_worker',
+        workers=4,
+        quiet=True,
+        debug=False
+    )
