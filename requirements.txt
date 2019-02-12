@@ -1,0 +1,6 @@
+requests
+bottle
+gunicorn
+meinheld
+pymongo
+bottle_errorsrest
