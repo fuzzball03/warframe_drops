@@ -19,6 +19,9 @@ db = cli[dbname]
 db.mods.create_index('name')
 
 mods = json.load(open('Mods.json', 'r', encoding="UTF-8"))
+
+downloads = []
+
 for mod in mods:
     if 'Beginner' in mod['uniqueName']:
         # mod['name'] += " - Defectuoso"
@@ -51,28 +54,38 @@ for mod in mods:
 
     mod['imageName'] = "%s.png" % name
     print(mod['imageName'])
-    db['mods'].insert_one(mod)
+
+    r = requests.get(
+        'https://api.warframe.market/v1/items/%s' %
+        name).json()
+    try:
+        mod['wiki_link'] = r['payload']['item']['items_in_set'][0]['en']['wiki_link']
+        mod['market_link'] = 'https://warframe.market/items/%s' % name
+        db['mods'].insert_one(mod)
+        url = r['payload']['item']['items_in_set'][0]['icon']
+
+        downloads.append((url, name))
+    except:
+        print("skip", r)
+
 os.remove('Mods.json')
 
 print("download images")
-def download_img(imageName):
-    # print("download", name)
 
-    r = requests.get('https://api.warframe.market/v1/items/%s' %
-                     imageName[:-4]).json()
-    try:
-        url = r['payload']['item']['items_in_set'][0]['icon']
-    except:
-        print("skip", r)
-        return
 
+def download_img(info):
+    url, name = info
     command = 'wget "https://warframe.market/static/assets/%s" -O "img/%s" > /dev/null 2>&1' % (
-        url, imageName)
-    print(command)
-    os.system(command)
+        url, name)
+    try:
+        print(command)
+        os.system(command)
+    except Exception as ex:
+        print("wtf", ex)
+
 
 p = multiprocessing.pool.Pool(20)
-p.map(download_img, [v['imageName'] for v in db['mods'].find({}, {'imageName': True})])
+p.map(download_img, downloads)
 main_js = """
 let arr = %s
 const updateResult = query => {
