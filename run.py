@@ -34,7 +34,6 @@ def info(name):
 
     result = db.mods.find_one({'name': name}, {'_id': False})
     if result:
-        print(result.keys())
         return template('templates/mod.tpl', mod=result)
     return abort(404, 'not found')
 
@@ -62,9 +61,9 @@ def robots():
 if __name__ == "__main__":
     run(
         port=3322, host="0.0.0.0",
-        #server="gunicorn",
-        #worker_class='egg:meinheld#gunicorn_worker',
-        #workers=4,
+        server="gunicorn",
+        worker_class='egg:meinheld#gunicorn_worker',
+        workers=4,
         quiet=False,
         debug=True
     )
