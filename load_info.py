@@ -18,7 +18,7 @@ db = cli[dbname]
 # create index
 db.mods.create_index('name')
 
-mods = json.load(open('Mods.json', 'r'))
+mods = json.load(open('Mods.json', 'r', encoding="UTF-8"))
 for mod in mods:
     if 'Beginner' in mod['uniqueName']:
         # mod['name'] += " - Defectuoso"
