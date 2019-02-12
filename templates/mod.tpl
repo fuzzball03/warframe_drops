@@ -1,7 +1,7 @@
 % include('templates/header.tpl')
 <div id="first">
     <div class="image">
-        <img src="/img/{{ mod['imageName'] }}" />
+        <img src="/img/{{ mod['imageName'] }}" width="260px"/>
     </div>
     <div class="info">
         name: {{ mod['name'] }} <br />
