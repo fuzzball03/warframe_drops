@@ -2,7 +2,7 @@
 <div id="first">
     <div class="image">
         <a href="{{ mod['wiki_link'] }}" target="_blank">
-            <img src="/img/{{ mod['imageName'] }}" width="260px"/>
+            <img src="/img/{{ mod['imageName'] }}" width="100%"/>
         </a>
     </div>
     <div class="info">

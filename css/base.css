@@ -93,7 +93,7 @@ table.minimalistBlack tfoot td {
 .image {
 	position: relative;
 	float: left;
-	width: 280px;
+	max-width: 280px;
 }
 .info {
 	position: relative;
@@ -101,13 +101,8 @@ table.minimalistBlack tfoot td {
 	padding-top: 20px;
 }
 
-@media only screen
-  and (min-device-width: 480px)
-  and (max-device-width: 100%)
-  and (-webkit-min-device-pixel-ratio: 3)
-  and (orientation: portrait) {
-}
-
-body {
-	min-width: 480px;
+@media (max-width: 460px) {
+  .image {
+		  	width: 120px;
+	  }
 }
