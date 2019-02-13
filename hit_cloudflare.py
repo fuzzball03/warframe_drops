@@ -5,26 +5,26 @@ import requests
 import queue
 
 cli = MongoClient(connect=False)
-db = cli['warframe_drops']
-qmods = queue.Queue()
+db = cli['warframe_items']
+qitems = queue.Queue()
 concurrency = 10
-url = 'https://mods.agalera.info/mod/'
+url = 'https://mods.agalera.info/item/'
 
-for mod in db.mods.find({}, {'name': True}):
-    qmods.put(mod['name'])
+for item in db.items.find({}, {'name': True}):
+    qitems.put(item['name'])
 
 
 def worker():
     r = requests.Session()
     while True:
         try:
-            mod = qmods.get_nowait()
+            item = qitems.get_nowait()
         except queue.Empty:
             break
-        res = r.get('%s%s' % (url, mod))
+        res = r.get('%s%s' % (url, item))
         if not res.ok:
             print("------------------------------------")
-            print(mod, '%s%s' % (url, mod))
+            print(item, '%s%s' % (url, item))
 
 
 workers = [threading.Thread(target=worker) for x in range(concurrency)]
