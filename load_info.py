@@ -7,7 +7,7 @@ import requests
 
 requests = requests.Session()
 dbname = 'warframe_drops'
-os.system('rm img/* -rf')
+os.system('rm img/*.png -rf')
 # download file
 os.system('wget https://raw.githubusercontent.com/WFCD/warframe-items/development/data/json/Mods.json')
 cli = MongoClient()
@@ -61,6 +61,14 @@ for mod in mods:
     try:
         mod['wiki_link'] = r['payload']['item']['items_in_set'][0]['en']['wiki_link']
         mod['market_link'] = 'https://warframe.market/items/%s' % name
+
+        for drop in mod.get('drops', []):
+            if 'rarity' not in drop:
+                drop['rarity'] = 'unknown'
+
+        if 'description' not in mod:
+            mod['description'] = ''
+
         db['mods'].insert_one(mod)
         url = r['payload']['item']['items_in_set'][0]['icon']
 
@@ -75,7 +83,7 @@ print("download images")
 
 def download_img(info):
     url, name = info
-    command = 'wget "https://warframe.market/static/assets/%s" -O "img/%s.png" > /dev/null 2>&1' % (
+    command = 'wget "https://warframe.market/static/assets/%s" -O "img/%s" > /dev/null 2>&1' % (
         url, name)
     try:
         print(command)
