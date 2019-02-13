@@ -93,7 +93,7 @@ table.minimalistBlack tfoot td {
 .image {
 	position: relative;
 	float: left;
-	max-width: 280px;
+	width: 280px;
 }
 .info {
 	position: relative;
@@ -105,4 +105,9 @@ table.minimalistBlack tfoot td {
   .image {
 		  	width: 120px;
 	  }
+}
+.search {
+	width: 300px;
+	height: 28px;
+	font-size: 20px;
 }

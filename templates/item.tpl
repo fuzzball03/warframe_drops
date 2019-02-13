@@ -22,8 +22,8 @@
         <table id="drop" class="sortable-table minimalistBlack">
             <thead>
                 <tr>
-                    <th class="numeric-sort">Place</th>
-                    <th class="numeric-sort">Rarity</th>
+                    <th>Place</th>
+                    <th>Rarity</th>
                     <th class="numeric-sort">Chance</th>
                 </tr>
             </thead>

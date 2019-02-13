@@ -7,15 +7,15 @@
         <script src="/js/sortable-tables.js"></script>
 
         <meta name="viewport" content="width=device-width, user-scalable=no">
-        % if defined('mod'):
-            <title>{{ mod['name'] }} - Warframe mods</title>
+        % if defined('item'):
+            <title>{{ item['name'] }} - Warframe drops</title>
         % else:
-            <title>Warframe mods</title>
+            <title>Warframe drops</title>
         % end
     </head>
     <body>
         <div id="content">
-            <input oninput="updateResult(this.value)" type="search" placeholder="search..." />
+            <input class="search" oninput="updateResult(this.value)" type="search" placeholder="search..." />
             <ul class="result">
                 <li></li>
             </ul>
