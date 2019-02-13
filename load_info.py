@@ -6,77 +6,89 @@ from pymongo import MongoClient
 import requests
 
 requests = requests.Session()
-dbname = 'warframe_drops'
+dbname = 'warframe_items'
 os.system('rm img/*.png -rf')
 # download file
-os.system('wget https://raw.githubusercontent.com/WFCD/warframe-items/development/data/json/Mods.json')
+os.system('wget https://raw.githubusercontent.com/WFCD/warframe-drop-data/gh-pages/data/all.slim.json')
 cli = MongoClient()
 # clean db
 cli.drop_database(dbname)
 
 db = cli[dbname]
 # create index
-db.mods.create_index('name')
+db.items.create_index('name')
 
-mods = json.load(open('Mods.json', 'r', encoding="UTF-8"))
+items = json.load(open('all.slim.json', 'r', encoding="UTF-8"))
 
 downloads = []
 
-for mod in mods:
-    if 'Beginner' in mod['uniqueName']:
-        # mod['name'] += " - Defectuoso"
-        continue
+prepare = {}
 
-    name = mod['name'].replace(' ', '_').replace(
-        '-', '_').replace("'", "").replace('&', 'and').lower()
-    replace = [
-        ("brain_storm", "brain_storm_(grakata)"),
-        ("ambush_optics", "ambush_optics_(rubico)"),
-        ("mesas_waltz", "mesa%E2%80%99s_waltz"),
-        ("rifle_riven_mod", "rifle_riven_mod_(veiled)"),
-        ('primed_pistol_ammo_mutation', 'primed_pistol_mutation'),
-        ('melee_riven_mod', 'melee_riven_mod_(veiled)'),
-        ('pistol_riven_mod', 'pistol_riven_mod_(veiled)'),
-        ('static_alacrity', 'static_alacrity_(staticor)'),
-        ('skull_shots', 'skull_shots_(viper)'),
-        ('primed_pistol_ammo_mutation', 'primed_pistol_mutation'),
-        ('shotgun_riven_mod', 'shotgun_riven_mod_(veiled)'),
-        # ('primed_sure_footed', 'primed_sure_footed'),
-        ('zaw_riven_mod', 'zaw_riven_mod_(veiled)'),
-        ('vermillion_storm', 'vermilion_storm'),
-        ('shrapnel_rounds', 'shrapnel_rounds_(marelok)'),
-        ('thundermiter', 'thundermiter_(miter)'),
-    ]
-    for x in replace:
-        if name == x[0]:
-            name = x[1]
-            break
 
-    mod['imageName'] = "%s.png" % name
-    print(mod['imageName'])
-
-    r = requests.get(
-        'https://api.warframe.market/v1/items/%s' %
-        name).json()
+def get_additional_data(name):
+    return False, {}
     try:
-        mod['wiki_link'] = r['payload']['item']['items_in_set'][0]['en']['wiki_link']
-        mod['market_link'] = 'https://warframe.market/items/%s' % name
+        additional_info = True
+        r = requests.get(
+            'https://api.warframe.market/v1/items/%s' %
+            name).json()
 
-        for drop in mod.get('drops', []):
-            if 'rarity' not in drop:
-                drop['rarity'] = 'unknown'
+        if 'error' in r:
+            print('err', name)
+            additional_info = False
+    except Exception:
+        additional_info = False
+        r = {}
+    return additional_info, r
 
-        if 'description' not in mod:
-            mod['description'] = ''
 
-        db['mods'].insert_one(mod)
-        url = r['payload']['item']['items_in_set'][0]['icon']
+for item in items:
+    if item['item'] not in prepare:
+        name = item['item'].lower().replace(
+            ' ', '_').replace(
+            '-', '_').replace(
+            "'", "").replace(
+            '_blueprint', '')
+        if 'relic' in name:
+            if 'relic_' in name:
+                name = name.replace('relic_(', '')[:-1]
+            else:
+                name = name.replace('relic', 'intact')
+        if 'sculpture' in name:
+            tmp = name.split('_')
+            name = "_".join([tmp[1], tmp[0], tmp[2]])
+        if not any(x in name for x in ['endo', 'credits']):
+            additional_info, r = get_additional_data(name)
 
-        downloads.append((url, name))
-    except:
-        print("skip", r)
+        info = {
+            'name': item['item'],
+            'drops': [],
+            'imageName': "%s.png" % name
+        }
+        if additional_info:
+            info['market_link'] = 'https://warframe.market/items/%s' % name
+            info['wiki_link'] = r['payload']['item']['items_in_set'][0]['en']['wiki_link']
+            info['imageName'] = "%s.png" % name
+            url = r['payload']['item']['items_in_set'][0]['icon']
+            downloads.append((url, name))
 
-os.remove('Mods.json')
+        else:
+            info['imageName'] = "no.png"
+            info['wiki_link'] = None
+            info['market_link'] = None
+
+        prepare[item['item']] = info
+
+    drop = {
+        'place': item['place'],
+        'rarity': item.get('rarity', 'undefined'),
+        'chance': item.get('chance', 'undefined'),
+    }
+    prepare[item['item']]['drops'].append(drop)
+
+for item in prepare:
+    db.items.insert_one(prepare[item])
+os.remove('all.slim.json')
 
 print("download images")
 
@@ -109,7 +121,7 @@ const updateResult = query => {
 			if(algo.toLowerCase().indexOf(word.toLowerCase()) != -1){
 
 				if (max == actual){return ""}
-        resultList.innerHTML += `<li class="list-group-item"><a href="/mod/${algo}">${algo}</a></li>`;
+        resultList.innerHTML += `<li class="list-group-item"><a href="/item/${algo}">${algo}</a></li>`;
 				actual ++;
 
 			}
@@ -118,7 +130,7 @@ const updateResult = query => {
 }
 
 updateResult("")
-""" % str([mod['name'] for mod in db.mods.find({}, {'name': True})])
+""" % str([item['name'] for item in db.items.find({}, {'name': True})])
 
 with open('js/main.js', 'w') as f:
     f.write(main_js)

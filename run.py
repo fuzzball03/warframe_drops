@@ -8,20 +8,10 @@ from bottle_errorsrest import ErrorsRestPlugin
 
 install(ErrorsRestPlugin())
 
-dbname = 'warframe_drops'
+dbname = 'warframe_items'
 
 cli = MongoClient(connect=False)
 db = cli[dbname]
-
-
-@get('/search/<text>')
-def search(text):
-    return {'mods': list(db.mods.find({'name': re.compile(text, re.IGNORECASE)}, {'name': True, '_id': False}))}
-
-
-@get('/all')
-def all_mods():
-    return {'mods': [v['name'] for v in db.mods.find({}, {'name': True})]}
 
 
 @get('/')
@@ -29,12 +19,12 @@ def index():
     return template('templates/index.tpl')
 
 
-@get('/mod/<name>')
+@get('/item/<name>')
 def info(name):
 
-    result = db.mods.find_one({'name': name}, {'_id': False})
+    result = db.items.find_one({'name': name}, {'_id': False})
     if result:
-        return template('templates/mod.tpl', mod=result)
+        return template('templates/item.tpl', item=result)
     return abort(404, 'not found')
 
 
