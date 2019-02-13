@@ -6,8 +6,12 @@
         </a>
     </div>
     <div class="info">
+    % if item['wiki_link']:
         <a href="{{ item['wiki_link'] }}" target="_blank">wiki</a> <br />
+    % end
+    % if item['market_link']:
         <a href="{{ item['market_link'] }}" target="_blank">market</a> <br />
+    % end
         name: {{ item['name'] }} <br />
 
     </div>
@@ -15,12 +19,15 @@
 </div>
 <div id="drops">
     % if 'drops' in item:
-        <table id="drop" class="minimalistBlack">
-            <tr>
-                <th onclick="w3.sortHTML('#drop', '.item', 'td:nth-child(1)')">Place</th>
-                <th onclick="w3.sortHTML('#drop', '.item', 'td:nth-child(2)')">Rarity</th>
-                <th onclick="w3.sortHTML('#drop', '.item', 'td:nth-child(3)')">Chance</th>
-            </tr>
+        <table id="drop" class="sortable-table minimalistBlack">
+            <thead>
+                <tr>
+                    <th class="numeric-sort">Place</th>
+                    <th class="numeric-sort">Rarity</th>
+                    <th class="numeric-sort">Chance</th>
+                </tr>
+            </thead>
+            <tbody>
             % for drop in item['drops']:
                 <tr class="item">
                     <td>{{!drop['place'] }}</td>
@@ -28,6 +35,7 @@
                     <td>{{!drop['chance'] }}%</td>
                 </tr>
             % end
+            </tbody>
         </table>
     % end
     % if 'drops' not in item:
