@@ -83,7 +83,7 @@ print("download images")
 
 def download_img(info):
     url, name = info
-    command = 'wget "https://warframe.market/static/assets/%s" -O "img/%s" > /dev/null 2>&1' % (
+    command = 'wget "https://warframe.market/static/assets/%s" -O "img/%s.png" > /dev/null 2>&1' % (
         url, name)
     try:
         print(command)
