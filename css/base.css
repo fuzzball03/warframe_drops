@@ -86,7 +86,7 @@ table.minimalistBlack tfoot td {
 }
 .result {
 	position: absolute;
-	width: 200px;
+	min-width: 200px;
 	background-color: #FFF;
 	z-index: 2;
 }
