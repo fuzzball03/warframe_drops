@@ -45,7 +45,16 @@ def js(filename):
 
 @get('/robots.txt')
 def robots():
-    return "User-agent: *\nAllow: /"
+    return """User-agent: *
+Allow: /
+
+Sitemap: https://mods.agalera.info/sitemap.xml
+"""
+
+
+@get('/sitemap.xml')
+def sitemap(filename):
+    return static_file('sitemap.xml', 'js')
 
 
 if __name__ == "__main__":
@@ -54,6 +63,7 @@ if __name__ == "__main__":
         server="gunicorn",
         worker_class='egg:meinheld#gunicorn_worker',
         workers=4,
+        # reloader=True,
         quiet=False,
         debug=True
     )
