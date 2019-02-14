@@ -49,7 +49,7 @@ def robots():
 
 
 @get('/sitemap.xml')
-def sitemap(filename):
+def sitemap():
     return static_file('sitemap.xml', 'xml')
 
 
