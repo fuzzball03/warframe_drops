@@ -50,7 +50,7 @@ def robots():
 
 @get('/sitemap.xml')
 def sitemap(filename):
-    return static_file('sitemap.xml', 'js')
+    return static_file('sitemap.xml', 'xml')
 
 
 if __name__ == "__main__":
