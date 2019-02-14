@@ -1,12 +1,13 @@
 from urllib.parse import quote
 import datetime
 
+import requests
 from pymongo import MongoClient
 
 
 cli = MongoClient(connect=False)
 db = cli['warframe_items']
-url = 'https://mods.agalera.info/item/'
+url = 'https://mods.agalera.info/'
 
 now = datetime.datetime.utcnow().replace(
     microsecond=0).replace(
@@ -24,7 +25,7 @@ xml = """<?xml version="1.0" encoding="UTF-8"?>
 for item in db.items.find({}, {'name': True}):
     xml += """
     <url>
-        <loc>""" + url + quote(item['name']) + """</loc>
+        <loc>""" + url + "item/" + quote(item['name']) + """</loc>
         <lastmod>""" + now + """</lastmod>
         <priority>1.00</priority>
     </url>"""
@@ -34,3 +35,6 @@ xml += """
 """
 with open('xml/sitemap.xml', 'w') as f:
     f.write(xml)
+
+print(requests.get('http://www.google.com/ping?sitemap=%s/sitemap.xml' % url).content)
+
