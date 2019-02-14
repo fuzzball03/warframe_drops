@@ -45,11 +45,7 @@ def js(filename):
 
 @get('/robots.txt')
 def robots():
-    return """User-agent: *
-Allow: /
-
-Sitemap: https://mods.agalera.info/sitemap.xml
-"""
+    return static_file('robots.txt', 'txt')
 
 
 @get('/sitemap.xml')
