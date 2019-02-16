@@ -28,6 +28,7 @@ prepare_places = {}
 
 
 def get_additional_data(name):
+    return False, {}
     try:
         additional_info = True
         r = requests.get(
@@ -45,14 +46,19 @@ def get_additional_data(name):
 
 for item in items:
     rotation = 'normal'
+    level = 'normal'
     name_clean = item['place'].replace(
         '<b>', '').replace(
         '</b>', '')
-    tmp = name_clean.split(', Rotation ')
-    name_clean = tmp[0]
 
+    tmp = name_clean.split(', Rotation ')
     if len(tmp) == 2:
         rotation = tmp[1]
+
+    tmp = tmp[0].split(' (')
+    if len(tmp) == 2:
+        level = tmp[1].split(')')[0]
+    name_clean = tmp[0]
 
     if item['item'] not in prepare_items:
         name = item['item'].lower().replace(
@@ -98,13 +104,16 @@ for item in items:
     if name_clean not in prepare_places:
         prepare_places[name_clean] = {
             'name': name_clean,
-            'drops': {'normal': []}
+            'levels': {}
         }
 
-    if rotation not in prepare_places[name_clean]['drops']:
-        prepare_places[name_clean]['drops'][rotation] = []
+    if level not in prepare_places[name_clean]['levels']:
+        prepare_places[name_clean]['levels'][level] = {'drops': {}}
 
-    prepare_places[name_clean]['drops'][rotation].append(
+    if rotation not in prepare_places[name_clean]['levels'][level]['drops']:
+        prepare_places[name_clean]['levels'][level]['drops'][rotation] = []
+
+    prepare_places[name_clean]['levels'][level]['drops'][rotation].append(
         {
             'item': item['item'],
             'rarity': item.get('rarity', 'undefined'),
@@ -154,7 +163,7 @@ const updateResult = query => {
             if(algo.toLowerCase().indexOf(word.toLowerCase()) != -1){
 
                 if (max == actual){return ""}
-        resultList.innerHTML += `<li class="list-group-item item2"><a href="/item/${algo}">${algo}</a></li>`;
+        resultList.innerHTML += `<a href="/item/${algo}"><li class="list-group-item item2">${algo}</li></a>`;
                 actual ++;
 
             }
@@ -167,7 +176,7 @@ const updateResult = query => {
             if(algo.toLowerCase().indexOf(word.toLowerCase()) != -1){
 
                 if (max == actual){return ""}
-        resultList.innerHTML += `<li class="list-group-item place"><a href="/place/${algo}">${algo}</a></li>`;
+        resultList.innerHTML += `<a href="/place/${algo}"><li class="list-group-item place">${algo}</li></a>`;
                 actual ++;
 
             }
@@ -183,3 +192,6 @@ updateResult("")
 
 with open('js/main.js', 'w') as f:
     f.write(main_js)
+
+os.system('git checkout img/no.png')
+os.system('git checkout img/logo.png')

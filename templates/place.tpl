@@ -6,39 +6,41 @@
     <div class="clear"></div>
 </div>
 <div id="drops">
-    % if 'drops' in place:
-        % for rotation in place['drops']:
-            % if len(place['drops'][rotation]) == 0:
-                % continue
-            % end
-            % if rotation == 'normal':
-                Always
-            % else:
-                Rotation {{!rotation}}
-            % end
-
-            <table id="drop" class="sortable-table minimalistBlack">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Rarity</th>
-                        <th class="numeric-sort">Chance</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                %for drop in place['drops'][rotation]:
-                    <tr class="item">
-                        <td>{{!drop['item'] }}</td>
-                        <td>{{!drop['rarity'] }}</td>
-                        <td>{{!drop['chance'] }}%</td>
-                    </tr>
+    % if 'levels' in place:
+        % for level in sorted(place['levels']):
+            {{!level}}
+            % for rotation in sorted(place['levels'][level]['drops']):
+                % if len(place['levels'][level]['drops'][rotation]) == 0:
+                    % continue
                 % end
-                </tbody>
-            </table>
+                % if rotation == 'normal':
+                    Always
+                % else:
+                    Rotation {{!rotation}}
+                % end
+
+                <table id="drop" class="sortable-table minimalistBlack">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Rarity</th>
+                            <th class="numeric-sort">Chance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    %for drop in place['levels'][level]['drops'][rotation]:
+                        <tr class="item">
+                            <td>{{!drop['item'] }}</td>
+                            <td>{{!drop['rarity'] }}</td>
+                            <td>{{!drop['chance'] }}%</td>
+                        </tr>
+                    % end
+                    </tbody>
+                </table>
+            % end
         % end
-    % end
-    % if 'drops' not in place:
+    % else:
         info not available
     % end
     <div class="clear"></div>
