@@ -84,12 +84,7 @@ table.minimalistBlack tfoot td {
 	position: relative;
 	clear: both;
 }
-.result {
-	position: absolute;
-	min-width: 200px;
-	background-color: #FFF;
-	z-index: 2;
-}
+
 .image {
 	position: relative;
 	float: left;
@@ -107,7 +102,35 @@ table.minimalistBlack tfoot td {
 	  }
 }
 .search {
+	position: relative;
+	float: left;
 	width: 300px;
 	height: 28px;
 	font-size: 20px;
+	margin-right: 10px;
+}
+.place {
+	background-color: rgb(169, 182, 255);
+}
+.item2 {
+	background-color: rgb(175, 245, 175);
+}
+.legend {
+	position: relative;
+	padding: 2px 10px 2px 10px;
+	float: left;
+
+}
+.result {
+	position: absolute;
+	min-width: 200px;
+	background-color: #FFF;
+	z-index: 2;
+}
+.list-group-item{
+	padding: 2px 10px 2px 10px;
+}
+.search_results {
+	position: relative;
+	clear: both;
 }

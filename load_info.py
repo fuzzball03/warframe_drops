@@ -17,12 +17,14 @@ cli.drop_database(dbname)
 db = cli[dbname]
 # create index
 db.items.create_index('name')
+db.places.create_index('name')
 
 items = json.load(open('all.slim.json', 'r', encoding="UTF-8"))
 
 downloads = []
 
-prepare = {}
+prepare_items = {}
+prepare_places = {}
 
 
 def get_additional_data(name):
@@ -42,7 +44,17 @@ def get_additional_data(name):
 
 
 for item in items:
-    if item['item'] not in prepare:
+    rotation = 'normal'
+    name_clean = item['place'].replace(
+        '<b>', '').replace(
+        '</b>', '')
+    tmp = name_clean.split(', Rotation ')
+    name_clean = tmp[0]
+
+    if len(tmp) == 2:
+        rotation = tmp[1]
+
+    if item['item'] not in prepare_items:
         name = item['item'].lower().replace(
             ' ', '_').replace(
             '-', '_').replace(
@@ -76,17 +88,38 @@ for item in items:
             info['wiki_link'] = None
             info['market_link'] = None
 
-        prepare[item['item']] = info
+        prepare_items[item['item']] = info
 
     drop = {
         'place': item['place'],
         'rarity': item.get('rarity', 'undefined'),
         'chance': item.get('chance', 'undefined'),
     }
-    prepare[item['item']]['drops'].append(drop)
+    if name_clean not in prepare_places:
+        prepare_places[name_clean] = {
+            'name': name_clean,
+            'drops': {'normal': []}
+        }
 
-for item in prepare:
-    db.items.insert_one(prepare[item])
+    if rotation not in prepare_places[name_clean]['drops']:
+        prepare_places[name_clean]['drops'][rotation] = []
+
+    prepare_places[name_clean]['drops'][rotation].append(
+        {
+            'item': item['item'],
+            'rarity': item.get('rarity', 'undefined'),
+            'chance': item.get('chance', 'undefined'),
+        }
+    )
+
+    prepare_items[item['item']]['drops'].append(drop)
+
+for item in prepare_items:
+    db.items.insert_one(prepare_items[item])
+
+for place in prepare_places:
+    db.places.insert_one(prepare_places[place])
+
 os.remove('all.slim.json')
 
 print("download images")
@@ -106,30 +139,47 @@ def download_img(info):
 p = multiprocessing.pool.Pool(20)
 p.map(download_img, downloads)
 main_js = """
-let arr = %s
+let items = %s;
+let places = %s;
 const updateResult = query => {
-	let resultList = document.querySelector(".result");
-	resultList.innerHTML = "";
+    let resultList = document.querySelector(".result");
+    resultList.innerHTML = "";
         if (query.length == 0){
                 return
-	}
-	max = 10;
-	actual = 0;
-	arr.map(algo =>{
-		[query].map(word =>{
-			if(algo.toLowerCase().indexOf(word.toLowerCase()) != -1){
+    }
+    max = 10;
+    actual = 0;
+    items.map(algo =>{
+        [query].map(word =>{
+            if(algo.toLowerCase().indexOf(word.toLowerCase()) != -1){
 
-				if (max == actual){return ""}
-        resultList.innerHTML += `<li class="list-group-item"><a href="/item/${algo}">${algo}</a></li>`;
-				actual ++;
+                if (max == actual){return ""}
+        resultList.innerHTML += `<li class="list-group-item item2"><a href="/item/${algo}">${algo}</a></li>`;
+                actual ++;
 
-			}
-		})
-	})
+            }
+        })
+    })
+    max = 10;
+    actual = 0;
+    places.map(algo =>{
+        [query].map(word =>{
+            if(algo.toLowerCase().indexOf(word.toLowerCase()) != -1){
+
+                if (max == actual){return ""}
+        resultList.innerHTML += `<li class="list-group-item place"><a href="/place/${algo}">${algo}</a></li>`;
+                actual ++;
+
+            }
+        })
+    })
 }
 
 updateResult("")
-""" % str([item['name'] for item in db.items.find({}, {'name': True})])
+""" % (
+    str([item['name'] for item in db.items.find({}, {'name': True})]),
+    str([place['name'] for place in db.places.find({}, {'name': True})])
+)
 
 with open('js/main.js', 'w') as f:
     f.write(main_js)

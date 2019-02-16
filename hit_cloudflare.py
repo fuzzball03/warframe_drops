@@ -7,11 +7,14 @@ import queue
 cli = MongoClient(connect=False)
 db = cli['warframe_items']
 qitems = queue.Queue()
-concurrency = 10
-url = 'https://mods.agalera.info/item/'
+concurrency = 30
+url = 'https://mods.agalera.info'
 
 for item in db.items.find({}, {'name': True}):
-    qitems.put(item['name'])
+    qitems.put("/item/" + item['name'])
+
+for place in db.places.find({}, {'name': True}):
+    qitems.put("/place/" + place['name'])
 
 
 def worker():

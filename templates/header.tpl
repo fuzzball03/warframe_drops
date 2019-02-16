@@ -16,6 +16,9 @@
     <body>
         <div id="content">
             <input class="search" oninput="updateResult(this.value)" type="search" placeholder="search..." />
-            <ul class="result">
-                <li></li>
-            </ul>
+            <div class="legend place">Place</div><div class="legend item2">Item</div>
+            <div class="search_results">
+                <ul class="result">
+                    <li></li>
+                </ul>
+            <div>

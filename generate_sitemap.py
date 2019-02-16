@@ -30,6 +30,14 @@ for item in db.items.find({}, {'name': True}):
         <priority>1.00</priority>
     </url>"""
 
+for place in db.places.find({}, {'name': True}):
+    xml += """
+    <url>
+        <loc>""" + url + "/place/" + quote(item['name']) + """</loc>
+        <lastmod>""" + now + """</lastmod>
+        <priority>1.00</priority>
+    </url>"""
+
 xml += """
 </urlset>
 """

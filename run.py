@@ -20,11 +20,19 @@ def index():
 
 
 @get('/item/<name>')
-def info(name):
+def item(name):
 
     result = db.items.find_one({'name': name}, {'_id': False})
     if result:
         return template('templates/item.tpl', item=result)
+    return abort(404, 'not found')
+
+
+@get('/place/<name:path>')
+def place(name):
+    result = db.places.find_one({'name': name}, {'_id': False})
+    if result:
+        return template('templates/place.tpl', place=result)
     return abort(404, 'not found')
 
 
