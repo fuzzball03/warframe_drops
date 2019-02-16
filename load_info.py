@@ -28,7 +28,6 @@ prepare_places = {}
 
 
 def get_additional_data(name):
-    return False, {}
     try:
         additional_info = True
         r = requests.get(
