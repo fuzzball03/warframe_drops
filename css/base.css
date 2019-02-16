@@ -104,7 +104,7 @@ table.minimalistBlack tfoot td {
 .search {
 	position: relative;
 	float: left;
-	width: 280px;
+	width: 270px;
 	height: 28px;
 	font-size: 20px;
 	margin-right: 10px;
@@ -133,4 +133,38 @@ table.minimalistBlack tfoot td {
 .search_results {
 	position: relative;
 	clear: both;
+}
+.drop_place {
+	position: relative;
+	/*float: left;*/
+	min-width: 390px;
+	width: 100%;
+}
+.place_level{
+	position: relative;
+	clear: both;
+}
+.text_level {
+	margin-top: 14px;
+	padding: 4px;
+	background-color: rgb(231, 231, 231);
+	clear: both;
+}
+.text_rotation {
+	padding: 4px;
+	background-color: rgb(216, 216, 216);
+	clear: both;
+}
+/* ----------- */
+
+.grid-container {
+    display: grid;
+}
+
+.grid-container--fill {
+    grid-template-columns: repeat(auto-fill, minmax(390px, 2fr));
+}
+
+.grid-container--fit {
+    grid-template-columns: repeat(auto-fit, minmax(390px, 2fr));
 }
