@@ -162,9 +162,5 @@ table.minimalistBlack tfoot td {
 }
 
 .grid-container--fill {
-    grid-template-columns: repeat(auto-fill, minmax(390px, 2fr));
-}
-
-.grid-container--fit {
-    grid-template-columns: repeat(auto-fit, minmax(390px, 2fr));
+    grid-template-columns: repeat(auto-fit, minmax(490px, 1fr));
 }

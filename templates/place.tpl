@@ -9,7 +9,7 @@
     % if 'levels' in place:
         % for level in sorted(place['levels']):
             <div class="text_level">{{!level}}</div>
-            <div class="place_level grid-container grid-container--fit">
+            <div class="place_level grid-container grid-container--fill">
                 % for rotation in sorted(place['levels'][level]['drops']):
                     % if len(place['levels'][level]['drops'][rotation]) == 0:
                         % continue
