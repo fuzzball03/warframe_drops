@@ -13,9 +13,7 @@
                 % if len(place['levels'][level]['drops'][rotation]) == 0:
                     % continue
                 % end
-                % if rotation == 'normal':
-                    Always
-                % else:
+                % if rotation != 'normal':
                     Rotation {{!rotation}}
                 % end
 
