@@ -56,7 +56,7 @@ for item in items:
     if len(tmp) == 2:
         rotation = tmp[1]
     if 'stage' in item:
-        rotation += " <b>%s</b>" % item['stage']
+        rotation += " - <b>%s</b>" % item['stage']
 
     tmp = tmp[0].split(' (')
     if len(tmp) == 2:
