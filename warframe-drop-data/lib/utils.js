@@ -190,7 +190,8 @@ module.exports = {
                         place: `Earth/Cetus (<b>${levelRange}</b>), Rotation ${rewardTier}`,
                         item: reward.itemName,
                         rarity: reward.rarity,
-                        chance: reward.chance
+                        chance: reward.chance,
+                        stage: reward.stage,
                     })
                 }
             }
@@ -206,7 +207,8 @@ module.exports = {
                         place: `Venus/Orb Vallis (<b>${levelRange}</b>), Rotation ${rewardTier}`,
                         item: reward.itemName,
                         rarity: reward.rarity,
-                        chance: reward.chance
+                        chance: reward.chance,
+                        stage: reward.stage,
                     })
                 }
             }
