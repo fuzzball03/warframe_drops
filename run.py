@@ -67,6 +67,11 @@ def img(filename):
     return static_file(filename, 'img')
 
 
+@get('/favicon.ico')
+def favicon():
+    return img('favicon.ico')
+
+
 @get('/js/<filename>')
 def js(filename):
     return static_file(filename, 'js')

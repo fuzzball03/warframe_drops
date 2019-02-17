@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mods.agalera.info/sitemap.xml
+Sitemap: https://warframedrops.com/sitemap.xml
 
