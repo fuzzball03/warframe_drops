@@ -9,6 +9,8 @@
         <meta name="viewport" content="width=device-width, user-scalable=no">
         % if defined('item'):
             <title>{{ item['name'] }} - Warframe drops</title>
+        % elif defined('place'):
+            <title>{{ place['name'] }} - Warframe drops</title>
         % else:
             <title>Warframe drops</title>
         % end
