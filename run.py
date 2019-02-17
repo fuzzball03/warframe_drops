@@ -19,6 +19,20 @@ def index():
     return template('templates/index.tpl')
 
 
+@get('/all')
+def all():
+    info = ""
+    for item in db.items.find({}, {'name': True}):
+        info += '<a href="/item/%s">%s</a><br />' % (
+            item['name'], item['name'])
+
+    for place in db.places.find({}, {'name': True}):
+        info += '<a href="/place/%s">%s</a><br />' % (
+            place['name'], place['name'])
+
+    return info
+
+
 @get('/item/<name>')
 def item(name):
 
