@@ -16,7 +16,14 @@ db = cli[dbname]
 
 @get('/')
 def index():
-    return template('templates/index.tpl')
+    items = db.items.count()
+    places = db.places.count()
+    drops = 0
+    for item in db.items.find({}, {'drops': True}):
+        drops += len(item.get('drops', []))
+    return template(
+        'templates/index.tpl',
+        items=items, places=places, drops=drops)
 
 
 @get('/all')

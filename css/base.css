@@ -18,6 +18,7 @@ time, mark, audio, video {
 
 	vertical-align: baseline;
 	font-family: 'Open Sans', sans-serif;
+	list-style-type: none;
 }
 a {
 	text-decoration: none;
@@ -80,10 +81,6 @@ table.minimalistBlack tfoot td {
 	margin-bottom: 12px;
 	clear: both;
 }
-#content {
-	position: relative;
-	clear: both;
-}
 
 .image {
 	position: relative;
@@ -97,13 +94,13 @@ table.minimalistBlack tfoot td {
 }
 
 @media (max-width: 460px) {
-  .image {
-		  	width: 120px;
+	.image {
+		width: 120px;
 	  }
-}
-.search {
-	position: relative;
-	float: left;
+	}
+	.search {
+		position: relative;
+		float: left;
 	width: 270px;
 	height: 28px;
 	font-size: 20px;
@@ -158,9 +155,52 @@ table.minimalistBlack tfoot td {
 /* ----------- */
 
 .grid-container {
-    display: grid;
+	display: grid;
 }
 
 .grid-container--fill {
-    grid-template-columns: repeat(auto-fit, minmax(490px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(490px, 1fr));
+}
+.statistics {
+	position: relative;
+	margin: 0 auto;
+	margin-top: 20px;
+	text-align: center;
+	width: 336px;
+}
+.total_info {
+	position: relative;
+	float: left;
+	width: 100px;
+	border: 1px solid rgb(172, 211, 255);
+	margin: 5px;
+}
+#header {
+	position: relative;
+	margin: auto;
+	width: 394px;
+}
+
+#footer {
+	clear: both;
+	bottom: 0px;
+	position: absolute;
+	height: 24px;
+	margin-top: -40px;
+	min-width: calc(100% - 20px);
+	padding-right: 20px;
+	border-top: 1px solid rgb(112, 112, 112);
+	background-color: rgb(241, 241, 241);
+	text-align: right;
+}
+#content {
+	position: relative;
+	clear: both;
+	margin-bottom: 40px;
+}
+body {
+	position: absolute;
+	min-width: 100%;
+	min-height: 100%;
+	clear: both;
 }

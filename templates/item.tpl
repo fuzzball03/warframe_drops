@@ -1,7 +1,11 @@
 % include('templates/header.tpl')
 <div id="first">
     <div class="image">
+    % if item['wiki_link']:
         <a href="{{ item['wiki_link'] }}" target="_blank">
+    % else:
+        <a href="#" target="_blank">
+    % end
             <img src="/img/{{ item['imageName'] }}" width="100%"/>
         </a>
     </div>

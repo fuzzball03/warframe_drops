@@ -15,11 +15,12 @@ now = datetime.datetime.utcnow().replace(
 
 
 xml = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>""" + url + """</loc>
+        <lastmod>""" + now + """</lastmod>
+        <priority>1.00</priority>
+    </url>
 
 """
 for item in db.items.find({}, {'name': True}):
@@ -44,6 +45,7 @@ xml += """
 with open('xml/sitemap.xml', 'w') as f:
     f.write(xml)
 sitemap_url = '%s/sitemap.xml' % url
+
 print(sitemap_url)
 print(requests.get('http://www.google.com/ping?sitemap=%s' % sitemap_url).content)
 

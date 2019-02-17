@@ -14,11 +14,13 @@
         % end
     </head>
     <body>
-        <div id="content">
+        <div id="header">
             <input class="search" oninput="updateResult(this.value)" type="search" placeholder="search..." />
             <div class="legend place">Place</div><div class="legend item2">Item</div>
             <div class="search_results">
                 <ul class="result">
                     <li></li>
                 </ul>
-            <div>
+            </div>
+        </div>
+        <div id="content">
