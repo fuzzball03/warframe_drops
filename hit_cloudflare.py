@@ -8,7 +8,7 @@ cli = MongoClient(connect=False)
 db = cli['warframe_items']
 qitems = queue.Queue()
 concurrency = 30
-url = 'https://mods.agalera.info'
+url = 'https://warframemods.com'
 
 for item in db.items.find({}, {'name': True}):
     qitems.put("/item/" + item['name'])

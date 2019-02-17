@@ -7,7 +7,7 @@ from pymongo import MongoClient
 
 cli = MongoClient(connect=False)
 db = cli['warframe_items']
-url = 'https://mods.agalera.info'
+url = 'https://warframemods.com'
 
 now = datetime.datetime.utcnow().replace(
     microsecond=0).replace(
