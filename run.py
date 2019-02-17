@@ -41,7 +41,7 @@ def css(filename):
     return static_file(filename, 'css')
 
 
-@get('/img/<filename>')
+@get('/img/<filename:path>')
 def img(filename):
     return static_file(filename, 'img')
 

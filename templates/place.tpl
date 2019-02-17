@@ -31,7 +31,7 @@
                             <tbody>
                             %for drop in place['levels'][level]['drops'][rotation]:
                                 <tr class="item">
-                                    <td>{{!drop['item'] }}</td>
+                                    <td><a href="/item/{{!drop['item']}}">{{!drop['item'] }}</a></td>
                                     <td>{{!drop['rarity'] }}</td>
                                     <td>{{!drop['chance'] }}%</td>
                                 </tr>

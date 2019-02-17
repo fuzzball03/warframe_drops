@@ -9,7 +9,7 @@ requests = requests.Session()
 dbname = 'warframe_items'
 os.system('rm img/*.png -rf')
 # download file
-os.system('wget https://raw.githubusercontent.com/WFCD/warframe-drop-data/gh-pages/data/all.slim.json')
+#os.system('wget https://raw.githubusercontent.com/WFCD/warframe-drop-data/gh-pages/data/all.slim.json')
 cli = MongoClient()
 # clean db
 cli.drop_database(dbname)
@@ -19,7 +19,7 @@ db = cli[dbname]
 db.items.create_index('name')
 db.places.create_index('name')
 
-items = json.load(open('all.slim.json', 'r', encoding="UTF-8"))
+items = json.load(open('warframe-drop-data/data/all.slim.json', 'r', encoding="UTF-8"))
 
 downloads = []
 
@@ -46,6 +46,8 @@ def get_additional_data(name):
 for item in items:
     rotation = 'normal'
     level = 'normal'
+    extra = 'Extra' in item['place']
+
     name_clean = item['place'].replace(
         '<b>', '').replace(
         '</b>', '')
@@ -58,6 +60,8 @@ for item in items:
     if len(tmp) == 2:
         level = tmp[1].split(')')[0]
     name_clean = tmp[0]
+    if extra:
+        name_clean += " (Extra)"
 
     if item['item'] not in prepare_items:
         name = item['item'].lower().replace(
@@ -97,6 +101,7 @@ for item in items:
 
     drop = {
         'place': item['place'],
+        'link_place': name_clean,
         'rarity': item.get('rarity', 'undefined'),
         'chance': item.get('chance', 'undefined'),
     }
@@ -128,7 +133,7 @@ for item in prepare_items:
 for place in prepare_places:
     db.places.insert_one(prepare_places[place])
 
-os.remove('all.slim.json')
+#os.remove('all.slim.json')
 
 print("download images")
 

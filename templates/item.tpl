@@ -30,9 +30,9 @@
             <tbody>
             % for drop in item['drops']:
                 <tr class="item">
-                    <td>{{!drop['place'] }}</td>
-                    <td>{{!drop['rarity'] }}</td>
-                    <td>{{!drop['chance'] }}%</td>
+                    <td><a href="/place/{{!drop['link_place']}}">{{!drop['place'] }}</a></td>
+                    <td>{{!drop['rarity']}}</td>
+                    <td>{{!drop['chance']}}%</td>
                 </tr>
             % end
             </tbody>
