@@ -178,6 +178,7 @@ table.minimalistBlack tfoot td {
 #header {
 	position: relative;
 	margin: auto;
+	max-width: 384px;
 }
 
 #footer {
