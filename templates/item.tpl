@@ -6,7 +6,7 @@
     % else:
         <a href="#" target="_blank">
     % end
-            <img src="/img/{{ item['imageName'] }}" width="100%"/>
+            <img src="/img/{{ item['imageName'] }}" alt="{{item['name']}}" width="100%"/>
         </a>
     </div>
     <div class="info">
